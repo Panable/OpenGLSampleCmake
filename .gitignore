@@ -30,6 +30,8 @@ build
 
 # Build results
 [Dd]ebug/
+cmake-build-debug/
+.cache/
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
