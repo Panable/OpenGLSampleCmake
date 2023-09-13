@@ -1,7 +1,4 @@
-
 # Created by https://www.gitignore.io/api/cmake,visualstudio
-
-/.cache
 
 ### CMake ###
 CMakeCache.txt
@@ -32,6 +29,7 @@ build
 
 # Build results
 [Dd]ebug/
+.cache/
 cmake-build-debug/
 [Dd]ebugPublic/
 [Rr]elease/
