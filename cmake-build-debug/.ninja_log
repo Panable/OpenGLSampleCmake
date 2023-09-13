@@ -1,0 +1,12 @@
+# ninja log v5
+0	648	1694599616279276604	CMakeFiles/OpenGLExample.dir/src/main.cpp.o	a16e43b62e77ef94
+0	96	1694599615725943292	CMakeFiles/GLAD.dir/thirdparty/glad.c.o	9829089f81a29267
+0	19	1694600791695896929	build.ninja	c43226c16190297c
+0	26	1694599615655943294	CMakeFiles/OpenGLExample.dir/src/VertexArrayObject.cpp.o	2a0586c35b35fa66
+392	414	1694599616045943280	libSTB_IMAGE.a	897adf1ffaad2b60
+1	25	1694600431645911124	CMakeFiles/OpenGLExample.dir/src/VertexBufferObject.cpp.o	cae0f6385130c89a
+0	392	1694599616022609947	CMakeFiles/STB_IMAGE.dir/thirdparty/stb_image.cpp.o	de91fcc798265702
+96	120	1694599615752609957	libGLAD.a	33aae249da49c783
+0	657	1694599616289276603	CMakeFiles/OpenGLExample.dir/src/ShaderProgram.cpp.o	1a6027ade6fb56dd
+0	38	1694599615669276627	CMakeFiles/OpenGLExample.dir/src/IndexBufferObject.cpp.o	9d88340f6e9bdb01
+25	75	1694600431695911122	OpenGLExample	8288ea270b33067
