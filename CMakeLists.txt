@@ -29,6 +29,13 @@ include_directories(${CMAKE_BINARY_DIR}/src)
 # Define the executable
 add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES})
 
+# Add compiler flags for debugging (e.g., -Wall, -g)
+if(CMAKE_COMPILER_IS_GNUCXX)
+    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic -g)
+elseif(MSVC)
+    target_compile_options(${PROJECT_NAME} PRIVATE /W4 /WX /Zi)
+    target_link_options(${PROJECT_NAME} PRIVATE /DEBUG)
+endif()
 # We need a CMAKE_DIR with some code to find external dependencies
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
