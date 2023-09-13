@@ -1,5 +1,4 @@
-﻿#ifndef SHADER_PROGRAM_CLASS
-#define SHADER_PROGRAM_CLASS
+﻿#pragma once
 #include <glad/glad.h>
 #include <fstream>
 #include <iostream>
@@ -24,4 +23,3 @@ private:
 	void Delete() const;
 
 };
-#endif

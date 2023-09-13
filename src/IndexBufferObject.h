@@ -1,5 +1,4 @@
-#ifndef INDEX_BUFFER_OBJECT_CLASS
-#define INDEX_BUFFER_OBJECT_CLASS
+#pragma once
 #include <glad/glad.h>
 class IndexBufferObject
 {
@@ -13,4 +12,3 @@ public:
 	void Bind() const;
 	void Unbind() const;
 };
-#endif

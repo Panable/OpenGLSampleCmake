@@ -1,5 +1,4 @@
-#ifndef VERTEX_ARRAY_OBJECT_CLASS
-#define VERTEX_ARRAY_OBJECT_CLASS
+#pragma once
 #include "VertexBufferObject.h"
 
 class VertexArrayObject
@@ -15,4 +14,3 @@ public:
 	void Unbind() const;
 	void LinkAttrib(const VertexBufferObject& VBO, const unsigned int index, const unsigned int numElements, GLenum type, const unsigned int stride, const void* offset) const;
 };
-#endif

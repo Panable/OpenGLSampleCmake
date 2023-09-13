@@ -1,6 +1,5 @@
-#ifndef VERTEX_BUFFER_OBJECT_CLASS
-#define VERTEX_BUFFER_OBJECT_CLASS
-#include<glad/glad.h>
+#pragma once
+#include <glad/glad.h>
 
 class VertexBufferObject
 {
@@ -14,6 +13,3 @@ public:
 private:
 	void Delete() const;
 };
-
-
-#endif
