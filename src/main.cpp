@@ -26,8 +26,8 @@ int main()
 
     //Initialize GLFW and set opengl version
     glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     // glfw window creation
@@ -50,18 +50,21 @@ int main()
         return -1;
     }
 
+    int nrAttributes;
+    glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
+    std::cout << "Maximum nr of vertex attributes supported: " << nrAttributes << std::endl;
     std::cout << glGetString(GL_VERSION) << std:: endl;
 
     //DATA
     float vertices[] =
     {
-        //x     y       z     r     g   b
-        ////
-        //COORDINATES       |     COLOR           | TEX COORD
-        -0.5f,  -0.5f,  0.0f,  1.0f, 0.0f, 0.0f,   0.0f, 0.0f,        //bottom - left
-         0.5f,  -0.5f,  0.0f,  0.0f, 1.0f, 0.0f,   1.0f, 0.0f,          // bottom - right
-        -0.5f,   0.5f,  0.0f,  0.0f, 0.0f, 1.0f,   0.0f, 1.0f,          //top - left
-         0.5f,   0.5f,  0.0f,  1.0f, 0.0f, 0.0f,   1.0f, 1.0f            //top -  right
+    /*
+       |     COORDINATES     |      COLOR       |  TEX COORD  |
+          x       y      z      r     g     b                       */
+        -0.5f,  -0.5f,  0.0f,  1.0f, 0.0f, 0.0f,   0.0f, 0.0f,  //  bottom  left
+         0.5f,  -0.5f,  0.0f,  0.0f, 1.0f, 0.0f,   2.0f, 0.0f,  //  bottom  right
+        -0.5f,   0.5f,  0.0f,  0.0f, 0.0f, 1.0f,   0.0f, 2.0f,  //  top     left
+         0.5f,   0.5f,  0.0f,  1.0f, 0.0f, 0.0f,   2.0f, 2.0f   //  top     right
     };
 
     unsigned int indices[] =
@@ -107,8 +110,8 @@ int main()
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
     if (data)
     {
@@ -148,7 +151,7 @@ int main()
 
         shader2.Activate();
         VAO1.Bind();
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
@@ -174,6 +177,7 @@ void processInput(GLFWwindow* window)
 // ---------------------------------------------------------------------------------------------
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
+    std::cout << "Framebuffer resized" << std::endl;
     // make sure the viewport matches the new window dimensions; note that width and 
     // height will be significantly larger than specified on retina displays.
     glViewport(0, 0, width, height);

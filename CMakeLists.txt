@@ -1,6 +1,6 @@
 # Copyright (C) 2018 Tomasz Gałaj
 
-cmake_minimum_required(VERSION 3.2 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.25 FATAL_ERROR)
 project(OpenGLExample)
 
 # Add .lib files

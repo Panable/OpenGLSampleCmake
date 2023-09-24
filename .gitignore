@@ -28,7 +28,7 @@ build
 
 # Build results
 [Dd]ebug/
-.cache/
+.cache/clangd/*
 cmake-build-debug/
 [Dd]ebugPublic/
 [Rr]elease/
