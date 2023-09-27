@@ -1,6 +1,6 @@
 ﻿---
 BasedOnStyle: Microsoft
-AccessModifierOffset: '0'
+AccessModifierOffset: -4
 AlignConsecutiveMacros: 'true'
 ColumnLimit: 120
 AlignConsecutiveDeclarations: true

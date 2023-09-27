@@ -3,6 +3,7 @@
 #include <iostream>
 #include <sstream>
 #include <Debug.h>
+#include "Texture.h"
 #include "stb_image.h"
 //OPENGL STUFF
 #include <glad/glad.h>
@@ -23,7 +24,6 @@ const unsigned int SCR_HEIGHT = 600;
 
 int main()
 {
-
     //Initialize GLFW and set opengl version
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -101,30 +101,8 @@ int main()
 
 
     const char* filePath ="res/texture/brick.png";
-    int width, height, colorChannel;
 
-    unsigned char* data = stbi_load(filePath, &width, &height, &colorChannel, 4);
-    unsigned int texture;
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-    if (data)
-    {
-	    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-	    glGenerateMipmap(GL_TEXTURE_2D);
-    }
-    else
-    {
-	    std::cout << "ERROR LOADING TEXTURE AT " << filePath << std::endl;
-    }
-
-    glBindTexture(GL_TEXTURE_2D, 0);
-    stbi_image_free(data);
+    Texture texture1(filePath);
 
     //SHADER GENERATION
     const ShaderProgram shader1("res/shaders/basic/vertex.shader", "res/shaders/basic/fragment.shader");
@@ -132,8 +110,7 @@ int main()
 
     shader2.Activate();
 
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture);
+    texture1.Bind();
     shader2.Set1i("ourTexture", 0);
 
 
