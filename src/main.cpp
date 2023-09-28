@@ -4,10 +4,16 @@
 #include <sstream>
 #include <Debug.h>
 #include "Texture.h"
+#include "detail/type_mat.hpp"
+#include "detail/type_vec.hpp"
 #include "stb_image.h"
+
 //OPENGL STUFF
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 //MY INCLUDES
 #include "IndexBufferObject.h"
@@ -62,9 +68,9 @@ int main()
        |     COORDINATES     |      COLOR       |  TEX COORD  |
           x       y      z      r     g     b                       */
         -0.5f,  -0.5f,  0.0f,  1.0f, 0.0f, 0.0f,   0.0f, 0.0f,  //  bottom  left
-         0.5f,  -0.5f,  0.0f,  0.0f, 1.0f, 0.0f,   2.0f, 0.0f,  //  bottom  right
-        -0.5f,   0.5f,  0.0f,  0.0f, 0.0f, 1.0f,   0.0f, 2.0f,  //  top     left
-         0.5f,   0.5f,  0.0f,  1.0f, 0.0f, 0.0f,   2.0f, 2.0f   //  top     right
+         0.5f,  -0.5f,  0.0f,  0.0f, 1.0f, 0.0f,   1.0f, 0.0f,  //  bottom  right
+        -0.5f,   0.5f,  0.0f,  0.0f, 0.0f, 1.0f,   0.0f, 1.0f,  //  top     left
+         0.5f,   0.5f,  0.0f,  1.0f, 0.0f, 0.0f,   1.0f, 1.0f   //  top     right
     };
 
     unsigned int indices[] =
@@ -100,7 +106,7 @@ int main()
     //TEXTURE GENERATION
 
 
-    const char* filePath ="res/texture/brick.png";
+    const char* filePath ="res/texture/obamna2.png";
 
     Texture texture1(filePath);
 
@@ -111,7 +117,18 @@ int main()
     shader2.Activate();
 
     texture1.Bind();
+    
+    //transformations
+
+    glm::mat4 trans = glm::mat4(1.0f); //identity
+
+    //note we apply the rotation first then we scale!
+    trans = glm::rotate(trans, glm::radians(135.0f), glm::vec3(0.0, 0.0, 1.0)); //rotate around z
+    trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5)); // scale by 0.5f
+
+    shader2.SetMatrix4f("transform", 1, false, trans);
     shader2.Set1i("ourTexture", 0);
+
 
 
     while (!glfwWindowShouldClose(window))
@@ -125,10 +142,21 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        float rot = 0.0f;
+        int counter = 0;
 
+        if (counter % 100 == 0)
+        {
+            rot--;
+        }
+
+        trans = glm::rotate(trans, glm::radians(rot), glm::vec3(0.0, 0.0, 1.0)); //rotate around z
+
+        shader2.SetMatrix4f("transform", 1, false, trans);
         shader2.Activate();
         VAO1.Bind();
         GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
+        counter++;
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------

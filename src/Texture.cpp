@@ -4,6 +4,7 @@
 
 Texture::Texture(const std::string& path) : m_FilePath(path)
 {
+    stbi_set_flip_vertically_on_load(true);
     unsigned char* data = stbi_load(path.c_str(), &m_Width, &m_Height, &m_colorChannel, 4);
 
     if (!data)
