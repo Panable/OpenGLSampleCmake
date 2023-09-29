@@ -142,21 +142,12 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        float rot = 0.0f;
-        int counter = 0;
-
-        if (counter % 100 == 0)
-        {
-            rot--;
-        }
-
-        trans = glm::rotate(trans, glm::radians(rot), glm::vec3(0.0, 0.0, 1.0)); //rotate around z
+        trans = glm::rotate(trans, glm::radians((float)glfwGetTime()), glm::vec3(0.0, 0.0, 1.0)); //rotate around z
 
         shader2.SetMatrix4f("transform", 1, false, trans);
         shader2.Activate();
         VAO1.Bind();
         GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
-        counter++;
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
