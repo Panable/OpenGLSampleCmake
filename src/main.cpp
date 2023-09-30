@@ -98,7 +98,7 @@ int main()
 
     // TEXTURE GENERATION
 
-    const char* filePath = "res/texture/obamna2.png";
+    const char* filePath = "res/texture/cheltoni.jpg";
 
     Texture texture1(filePath);
 
