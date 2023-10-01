@@ -82,11 +82,17 @@ int main()
 
         -0.5f, 0.5f,  -0.5f, 0.0f, 1.0f, 0.5f,  0.5f,  -0.5f, 1.0f, 1.0f, 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
         0.5f,  0.5f,  0.5f,  1.0f, 0.0f, -0.5f, 0.5f,  0.5f,  0.0f, 0.0f, -0.5f, 0.5f,  -0.5f, 0.0f, 1.0f};
+
     unsigned int indices[] = {
         0, 1, 3, // first triangle
         1, 2, 3  // second triangle
     };
 
+    glm::vec3 cubePositions[] = {glm::vec3(0.0f, 0.0f, 0.0f),    glm::vec3(2.0f, 5.0f, -15.0f),
+                                 glm::vec3(-1.5f, -2.2f, -2.5f), glm::vec3(-3.8f, -2.0f, -12.3f),
+                                 glm::vec3(2.4f, -0.4f, -3.5f),  glm::vec3(-1.7f, 3.0f, -7.5f),
+                                 glm::vec3(1.3f, -2.0f, -2.5f),  glm::vec3(1.5f, 2.0f, -2.5f),
+                                 glm::vec3(1.5f, 0.2f, -1.5f),   glm::vec3(-1.3f, 1.0f, -1.5f)};
     // VAO GENERATION
     const VertexArrayObject VAO1;
     VAO1.Bind();
@@ -158,15 +164,29 @@ int main()
         // ORTHO PROJECTION
         // float aspect = (float)SCR_WIDTH/SCR_HEIGHT;
         // projection = glm::ortho(-aspect, aspect, -1.0f, 1.0f, 0.1f, 100.0f);
-    model = glm::mat4(1.0f);
         projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-        view = glm::translate(view, glm::vec3(addX * 0.1f, 0.0f, addZ * 0.1f));
+        const float radius = 10.0f;
+        float       camX = sin(glfwGetTime()) * radius;
+        float       camZ = cos(glfwGetTime()) * radius;
+        glm::mat4   view;
+        view = glm::lookAt(glm::vec3(camX, 0.0, camZ), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
         model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
         shader2.SetMatrix4f("view", 1, false, view);
         shader2.SetMatrix4f("projection", 1, false, projection);
-        shader2.SetMatrix4f("model", 1, false, model);
         VAO1.Bind();
-        GLCall(glDrawArrays(GL_TRIANGLES, 0, 36));
+
+        for (unsigned int i = 0; i < 10; i++)
+        {
+            model = glm::mat4(1.0f);
+            model = glm::translate(model, cubePositions[i]);
+            float angle = 20.0f * i;
+            if (i % 3 == 0)
+                model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(1.0f, 0.3f, 0.5f));
+            else
+                model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+            shader2.SetMatrix4f("model", 1, false, model);
+            GLCall(glDrawArrays(GL_TRIANGLES, 0, 36));
+        }
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
