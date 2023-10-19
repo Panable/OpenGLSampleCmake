@@ -21,6 +21,7 @@
 #include "VertexArrayObject.h"
 #include "VertexBufferObject.h"
 
+#define ARRAY_LEN(xs) sizeof(xs)/sizeof(xs[0])
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
@@ -78,14 +79,52 @@ int main()
     std::cout << "Maximum nr of vertex attributes supported: " << nrAttributes << std::endl;
     std::cout << glGetString(GL_VERSION) << std::endl;
 
+    float pyramid[] = {
+
+        //front side
+        -0.5f, -0.5f,  0.5f, 0.0f, 0.0f,
+         0.5f, -0.5f,  0.5f, 1.0f, 0.0f,
+         0.0f,  0.5f,  0.0f, 0.5f, 1.0f,        
+
+        //back side
+        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
+         0.5f, -0.5f, -0.5f, 1.0f, 0.0f,
+         0.0f,  0.5f,  0.0f, 0.5f, 1.0f,        
+
+        //left side
+        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 
+        -0.5f, -0.5f,  0.5f, 1.0f, 0.0f,
+         0.0f,  0.5f,  0.0f, 0.5f, 1.0f,
+
+        //right side
+         0.5f, -0.5f,  0.5f, 0.0f, 0.0f,
+         0.5f, -0.5f, -0.5f, 1.0f, 0.0f,
+         0.0f,  0.5f,  0.0f, 0.5f, 1.0f,
+
+        //bottom side
+        -0.5f,  -0.5f,  -0.5f,  0.0f,  1.0f, 
+         0.5f,  -0.5f,  -0.5f,  1.0f,  1.0f, 
+         0.5f,  -0.5f,   0.5f,  1.0f,  0.0f,
+         0.5f,  -0.5f,   0.5f,  1.0f,  0.0f, 
+        -0.5f,  -0.5f,   0.5f,  0.0f,  0.0f, 
+        -0.5f,  -0.5f,  -0.5f,  0.0f,  1.0f,
+     };
+
+
     // DATA
     float vertices[] = {
-        -0.5f,  -0.5f,  -0.5f,  0.0f,  0.0f, 
-         0.5f,  -0.5f,  -0.5f,  1.0f,  0.0f,
-         0.5f,   0.5f,  -0.5f,  1.0f,  1.0f, 
-         0.5f,   0.5f,  -0.5f,  1.0f,  1.0f, 
-        -0.5f,   0.5f,  -0.5f,  0.0f,  1.0f,  
-        -0.5f,  -0.5f,  -0.5f,  0.0f,  0.0f,
+
+    //         VERTEX           Texture Coord
+    //    X       Y        Z ,   X      Y 
+        -0.5f,  -0.5f,  -0.5f,  0.0f,  0.0f,  //1
+         0.5f,  -0.5f,  -0.5f,  1.0f,  0.0f,  //2
+         0.5f,   0.5f,  -0.5f,  1.0f,  1.0f,  //3
+         0.5f,   0.5f,  -0.5f,  1.0f,  1.0f,  //4 
+        -0.5f,   0.5f,  -0.5f,  0.0f,  1.0f,  //5 
+        -0.5f,  -0.5f,  -0.5f,  0.0f,  0.0f,  //1 
+
+        //BACK SIDE ^
+
 
         -0.5f,  -0.5f,   0.5f,  0.0f,  0.0f, 
          0.5f,  -0.5f,   0.5f,  1.0f,  0.0f, 
@@ -94,12 +133,16 @@ int main()
         -0.5f,   0.5f,   0.5f,  0.0f,  1.0f, 
         -0.5f,  -0.5f,   0.5f,  0.0f,  0.0f,
 
+        // FRONT SIDE ^
+
         -0.5f,   0.5f,   0.5f,  1.0f,  0.0f, 
         -0.5f,   0.5f,  -0.5f,  1.0f,  1.0f, 
         -0.5f,  -0.5f,  -0.5f,  0.0f,  1.0f,
         -0.5f,  -0.5f,  -0.5f,  0.0f,  1.0f,
         -0.5f,  -0.5f,   0.5f,  0.0f,  0.0f,
         -0.5f,   0.5f,   0.5f,  1.0f,  0.0f,
+
+        //LEFT SIDE ^
 
          0.5f,   0.5f,   0.5f,  1.0f,  0.0f,
          0.5f,   0.5f,  -0.5f,  1.0f,  1.0f, 
@@ -108,6 +151,8 @@ int main()
          0.5f,  -0.5f,   0.5f,  0.0f,  0.0f, 
          0.5f,   0.5f,   0.5f,  1.0f,  0.0f,
 
+        //RIGHT SIDE ^
+
         -0.5f,  -0.5f,  -0.5f,  0.0f,  1.0f, 
          0.5f,  -0.5f,  -0.5f,  1.0f,  1.0f, 
          0.5f,  -0.5f,   0.5f,  1.0f,  0.0f,
@@ -115,12 +160,16 @@ int main()
         -0.5f,  -0.5f,   0.5f,  0.0f,  0.0f, 
         -0.5f,  -0.5f,  -0.5f,  0.0f,  1.0f,
 
+        //BOTTOM SIDE ^
+
         -0.5f,   0.5f,  -0.5f,  0.0f,  1.0f, 
          0.5f,   0.5f,  -0.5f,  1.0f,  1.0f, 
          0.5f,   0.5f,   0.5f,  1.0f,  0.0f,
          0.5f,   0.5f,   0.5f,  1.0f,  0.0f, 
         -0.5f,   0.5f,   0.5f,  0.0f,  0.0f, 
         -0.5f,   0.5f,  -0.5f,  0.0f,  1.0f
+
+        //TOP SIDE ^
     };
 
     unsigned int indices[] = {
@@ -137,7 +186,7 @@ int main()
     const VertexArrayObject VAO1;
     VAO1.Bind();
 
-    const VertexBufferObject VBO1(vertices, sizeof(vertices));
+    const VertexBufferObject VBO1(pyramid, sizeof(vertices));
     const IndexBufferObject  IBO1(indices, sizeof(indices));
 
     // COORDS
@@ -175,7 +224,7 @@ int main()
     glm::mat4 view = glm::mat4(1.0f);
     glm::mat4 projection = glm::mat4(1.0f);
 
-    model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+    //model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 
     // note that we're translating the scene in the reverse direction of where we want to move
     view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
@@ -225,10 +274,10 @@ int main()
             float angle = 20.0f * i;
             if (i % 3 == 0)
                 model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(1.0f, 0.3f, 0.5f));
-            else
-                model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+            //else
+                //model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
             shader2.SetMatrix4f("model", 1, false, model);
-            GLCall(glDrawArrays(GL_TRIANGLES, 0, 36));
+            GLCall(glDrawArrays(GL_TRIANGLES, 0, ARRAY_LEN(pyramid) / 5));
         }
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
@@ -276,7 +325,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
     lastX = xpos;
     lastY = ypos;
 
-    float sensitivity = 0.1f;
+    float sensitivity = 0.01f;
     xoffset *= sensitivity;
     yoffset *= sensitivity;
 
